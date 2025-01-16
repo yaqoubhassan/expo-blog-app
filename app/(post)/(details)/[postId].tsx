@@ -10,7 +10,10 @@ import {
     Button,
     Alert,
     TouchableOpacity,
-    Platform
+    Platform,
+    TouchableWithoutFeedback,
+    Keyboard,
+    KeyboardAvoidingView
 } from "react-native";
 import { useFocusEffect, useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
@@ -192,113 +195,118 @@ export default function PostDetailsScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            {postDetails?.postImage && (
-                <Image
-                    source={{ uri: postDetails.postImage }}
-                    style={styles.image}
-                    resizeMode="cover"
-                />
-            )}
-            <Text style={styles.title}>{postDetails?.title}</Text>
-            <Text style={styles.meta}>
-                By {postDetails?.author?.name} ({postDetails?.author?.email})
-            </Text>
-            <Text style={styles.meta}>{new Date(postDetails?.createdAt).toDateString()}</Text>
-            <Text style={styles.content}>{postDetails?.content}</Text>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}
+            style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    {postDetails?.postImage && (
+                        <Image
+                            source={{ uri: postDetails.postImage }}
+                            style={styles.image}
+                            resizeMode="cover"
+                        />
+                    )}
+                    <Text style={styles.title}>{postDetails?.title}</Text>
+                    <Text style={styles.meta}>
+                        By {postDetails?.author?.name} ({postDetails?.author?.email})
+                    </Text>
+                    <Text style={styles.meta}>{new Date(postDetails?.createdAt).toDateString()}</Text>
+                    <Text style={styles.content}>{postDetails?.content}</Text>
 
-            <View style={styles.commentsContainer}>
-                <Text style={styles.sectionTitle}>Comments</Text>
-                {comments.map((comment, index) => (
-                    <View key={index} style={styles.comment}>
-                        <View style={styles.commentHeader}>
-                            <Text style={styles.commentAuthor}>
-                                {comment.author?.name || "Unknown Author"}
-                            </Text>
-                            <Text style={styles.commentDate}>
-                                {comment.createdAt ? new Date(comment.createdAt).toDateString() : "Unknown Date"}
-                            </Text>
-                        </View>
-                        {editingComment?.id === comment._id ? (
-                            <>
-                                <TextInput
-                                    value={editingComment?.content || ""}
-                                    onChangeText={(text) =>
-                                        setEditingComment((prev) => prev && { ...prev, content: text })
-                                    }
-                                    style={styles.input}
-                                    multiline
-                                />
-                                <View style={styles.commentActions}>
-                                    {/* <Button
+                    <View style={styles.commentsContainer}>
+                        <Text style={styles.sectionTitle}>Comments</Text>
+                        {comments.map((comment, index) => (
+                            <View key={index} style={styles.comment}>
+                                <View style={styles.commentHeader}>
+                                    <Text style={styles.commentAuthor}>
+                                        {comment.author?.name || "Unknown Author"}
+                                    </Text>
+                                    <Text style={styles.commentDate}>
+                                        {comment.createdAt ? new Date(comment.createdAt).toDateString() : "Unknown Date"}
+                                    </Text>
+                                </View>
+                                {editingComment?.id === comment._id ? (
+                                    <>
+                                        <TextInput
+                                            value={editingComment?.content || ""}
+                                            onChangeText={(text) =>
+                                                setEditingComment((prev) => prev && { ...prev, content: text })
+                                            }
+                                            style={styles.input}
+                                            multiline
+                                        />
+                                        <View style={styles.commentActions}>
+                                            {/* <Button
                                         title="Save"
                                         onPress={handleUpdateComment}
                                         color="#4cafb0"
                                     /> */}
-                                    <TouchableOpacity style={[styles.actionButton, {
-                                        backgroundColor: '#4cafb0',
-                                        marginRight: 10,
-                                    }]} onPress={handleUpdateComment}>
-                                        <Text style={styles.buttonText}>Save</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E53E3E', }]} onPress={() => setEditingComment(null)}>
-                                        <Text style={styles.buttonText}>Cancel</Text>
-                                    </TouchableOpacity>
-                                    {/* <Button
+                                            <TouchableOpacity style={[styles.actionButton, {
+                                                backgroundColor: '#4cafb0',
+                                                marginRight: 10,
+                                            }]} onPress={handleUpdateComment}>
+                                                <Text style={styles.buttonText}>Save</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E53E3E', }]} onPress={() => setEditingComment(null)}>
+                                                <Text style={styles.buttonText}>Cancel</Text>
+                                            </TouchableOpacity>
+                                            {/* <Button
                                         title="Cancel"
                                         onPress={() => setEditingComment(null)}
                                         color="#E53E3E"
                                     /> */}
-                                </View>
-                            </>
-                        ) : (
-                            <>
-                                <Text style={styles.commentText}>{comment.content || "No Content"}</Text>
-                                {authUserId === comment.author?._id ? (
-                                    <View style={styles.commentActions}>
-                                        {/* <Button
+                                        </View>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Text style={styles.commentText}>{comment.content || "No Content"}</Text>
+                                        {authUserId === comment.author?._id ? (
+                                            <View style={styles.commentActions}>
+                                                {/* <Button
                                             title="Edit"
                                             onPress={() =>
                                                 setEditingComment({ id: comment._id, content: comment.content })
                                             }
                                         /> */}
-                                        <TouchableOpacity onPress={() => setEditingComment({ id: comment._id, content: comment.content })}>
-                                            <Text style={styles.editText}>Edit</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => handleDeleteComment(comment._id)}>
-                                            <Text style={styles.deleteText}>Delete</Text>
-                                        </TouchableOpacity>
-                                        {/* <Button
+                                                <TouchableOpacity onPress={() => setEditingComment({ id: comment._id, content: comment.content })}>
+                                                    <Text style={styles.editText}>Edit</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => handleDeleteComment(comment._id)}>
+                                                    <Text style={styles.deleteText}>Delete</Text>
+                                                </TouchableOpacity>
+                                                {/* <Button
                                             title="Delete"
                                             onPress={() => handleDeleteComment(comment._id)}
                                             color="#E53E3E"
                                         /> */}
-                                    </View>
-                                ) : null}
-                            </>
-                        )}
+                                            </View>
+                                        ) : null}
+                                    </>
+                                )}
+                            </View>
+                        ))}
+
+
                     </View>
-                ))}
 
-
-            </View>
-
-            <View style={styles.addCommentContainer}>
-                <TextInput
-                    value={newComment}
-                    onChangeText={setNewComment}
-                    placeholder="Write a comment..."
-                    style={styles.input}
-                    multiline
-                />
-                <Button
-                    title={commentLoading ? "Posting..." : "Post Comment"}
-                    onPress={() => handleAddComment()}
-                    disabled={commentLoading || !newComment.trim()}
-                    color="#4cafb0"
-                />
-            </View>
-        </ScrollView>
+                    <View style={styles.addCommentContainer}>
+                        <TextInput
+                            value={newComment}
+                            onChangeText={setNewComment}
+                            placeholder="Write a comment..."
+                            style={styles.input}
+                            multiline
+                        />
+                        <Button
+                            title={commentLoading ? "Posting..." : "Post Comment"}
+                            onPress={() => handleAddComment()}
+                            disabled={commentLoading || !newComment.trim()}
+                            color="#4cafb0"
+                        />
+                    </View>
+                </ScrollView>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -306,12 +314,14 @@ const styles = StyleSheet.create({
     container: {
         padding: 16,
         backgroundColor: "#F7FAFC",
+        flexGrow: 1,
+        marginBottom: 16
     },
     image: {
         width: "100%",
         height: 200,
         borderRadius: 8,
-        marginBottom: 16,
+        // marginBottom: 16,
     },
     title: {
         fontSize: 24,

@@ -9,6 +9,12 @@ import {
     TouchableOpacity,
     Alert,
     ActivityIndicator,
+    ScrollView,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -141,74 +147,89 @@ export default function EditPostScreen() {
     }
 
     return (
-        <View style={{ flex: 1, padding: 16, backgroundColor: "#f8f9fa" }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 8 }}>Edit Post</Text>
-            <TextInput
-                value={title}
-                onChangeText={setTitle}
-                placeholder="Post Title"
-                style={{
-                    borderWidth: 1,
-                    borderColor: "#ccc",
-                    borderRadius: 8,
-                    padding: 12,
-                    marginBottom: 16,
-                    backgroundColor: "#fff",
-                }}
-            />
-            <TextInput
-                value={content}
-                onChangeText={setContent}
-                placeholder="Post Content"
-                multiline
-                style={{
-                    borderWidth: 1,
-                    borderColor: "#ccc",
-                    borderRadius: 8,
-                    padding: 12,
-                    height: 150,
-                    marginBottom: 16,
-                    textAlignVertical: "top",
-                    backgroundColor: "#fff",
-                }}
-            />
-            <View style={{ alignItems: "center", marginBottom: 16 }}>
-                {newImage ? (
-                    <Image
-                        source={{ uri: newImage }}
-                        style={{ width: 150, height: 150, borderRadius: 8 }}
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}
+            style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 8 }}>Edit Post</Text>
+                    <TextInput
+                        value={title}
+                        onChangeText={setTitle}
+                        placeholder="Post Title"
+                        style={{
+                            borderWidth: 1,
+                            borderColor: "#ccc",
+                            borderRadius: 8,
+                            padding: 12,
+                            marginBottom: 16,
+                            backgroundColor: "#fff",
+                        }}
                     />
-                ) : postImage ? (
-                    // <Image
-                    //     source={{ uri: `${postImage}?timestamp=${new Date().getTime()}` }}
-                    //     style={{ width: 150, height: 150, borderRadius: 8 }}
-                    // />
-                    <Image
-                        source={{ uri: postImage }}
-                        style={{ width: 150, height: 150, borderRadius: 8 }}
+                    <TextInput
+                        value={content}
+                        onChangeText={setContent}
+                        placeholder="Post Content"
+                        multiline
+                        style={{
+                            borderWidth: 1,
+                            borderColor: "#ccc",
+                            borderRadius: 8,
+                            padding: 12,
+                            height: 150,
+                            marginBottom: 16,
+                            textAlignVertical: "top",
+                            backgroundColor: "#fff",
+                        }}
                     />
-                ) : (
-                    <Text style={{ color: "#666" }}>No Image</Text>
-                )}
-            </View>
-            <TouchableOpacity
-                onPress={handleImagePick}
-                style={{
-                    backgroundColor: "#6B46C1",
-                    padding: 12,
-                    borderRadius: 8,
-                    alignItems: "center",
-                    marginBottom: 16,
-                }}
-            >
-                <Text style={{ color: "#fff", fontWeight: "bold" }}>Change Image</Text>
-            </TouchableOpacity>
-            <Button
-                title={saving ? "Saving Changes..." : "Save Changes"}
-                onPress={handleSaveChanges}
-                disabled={saving}
-                color="#4cafb0"
-            />
-        </View>
+                    <View style={{ alignItems: "center", marginBottom: 16 }}>
+                        {newImage ? (
+                            <Image
+                                source={{ uri: newImage }}
+                                style={{ width: 150, height: 150, borderRadius: 8 }}
+                            />
+                        ) : postImage ? (
+                            // <Image
+                            //     source={{ uri: `${postImage}?timestamp=${new Date().getTime()}` }}
+                            //     style={{ width: 150, height: 150, borderRadius: 8 }}
+                            // />
+                            <Image
+                                source={{ uri: postImage }}
+                                style={{ width: 150, height: 150, borderRadius: 8 }}
+                            />
+                        ) : (
+                            <Text style={{ color: "#666" }}>No Image</Text>
+                        )}
+                    </View>
+                    <TouchableOpacity
+                        onPress={handleImagePick}
+                        style={{
+                            backgroundColor: "#6B46C1",
+                            padding: 12,
+                            borderRadius: 8,
+                            alignItems: "center",
+                            marginBottom: 16,
+                        }}
+                    >
+                        <Text style={{ color: "#fff", fontWeight: "bold" }}>Change Image</Text>
+                    </TouchableOpacity>
+                    <Button
+                        title={saving ? "Saving Changes..." : "Save Changes"}
+                        onPress={handleSaveChanges}
+                        disabled={saving}
+                        color="#4cafb0"
+                    />
+                </ScrollView>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+
+
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        backgroundColor: "#F7FAFC",
+        flexGrow: 1,
+    },
+});
