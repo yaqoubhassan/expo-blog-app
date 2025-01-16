@@ -10,7 +10,9 @@ export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }} initialRouteName="(post)">
       <Stack.Screen name="(post)" />
+      <Stack.Screen name="(userPost)" />
       <Stack.Screen name="(auth)" />
     </Stack>
+
   );
 }
