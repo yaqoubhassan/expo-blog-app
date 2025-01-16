@@ -181,7 +181,7 @@ export default function RegisterScreen() {
       )}
 
       <TouchableOpacity
-        onPress={() => router.push("/(post)")}
+        onPress={() => router.push("/(auth)/(login)")}
         className="mt-4"
       >
         <Text style={styles.linkText}>
