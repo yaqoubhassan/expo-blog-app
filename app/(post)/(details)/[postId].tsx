@@ -9,6 +9,8 @@ import {
     TextInput,
     Button,
     Alert,
+    TouchableOpacity,
+    Platform
 } from "react-native";
 import { useFocusEffect, useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
@@ -228,16 +230,25 @@ export default function PostDetailsScreen() {
                                     multiline
                                 />
                                 <View style={styles.commentActions}>
-                                    <Button
+                                    {/* <Button
                                         title="Save"
                                         onPress={handleUpdateComment}
                                         color="#4cafb0"
-                                    />
-                                    <Button
+                                    /> */}
+                                    <TouchableOpacity style={[styles.actionButton, {
+                                        backgroundColor: '#4cafb0',
+                                        marginRight: 10,
+                                    }]} onPress={handleUpdateComment}>
+                                        <Text style={styles.buttonText}>Save</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#E53E3E', }]} onPress={() => setEditingComment(null)}>
+                                        <Text style={styles.buttonText}>Cancel</Text>
+                                    </TouchableOpacity>
+                                    {/* <Button
                                         title="Cancel"
                                         onPress={() => setEditingComment(null)}
                                         color="#E53E3E"
-                                    />
+                                    /> */}
                                 </View>
                             </>
                         ) : (
@@ -245,17 +256,23 @@ export default function PostDetailsScreen() {
                                 <Text style={styles.commentText}>{comment.content || "No Content"}</Text>
                                 {authUserId === comment.author?._id ? (
                                     <View style={styles.commentActions}>
-                                        <Button
+                                        {/* <Button
                                             title="Edit"
                                             onPress={() =>
                                                 setEditingComment({ id: comment._id, content: comment.content })
                                             }
-                                        />
-                                        <Button
+                                        /> */}
+                                        <TouchableOpacity onPress={() => setEditingComment({ id: comment._id, content: comment.content })}>
+                                            <Text style={styles.editText}>Edit</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => handleDeleteComment(comment._id)}>
+                                            <Text style={styles.deleteText}>Delete</Text>
+                                        </TouchableOpacity>
+                                        {/* <Button
                                             title="Delete"
                                             onPress={() => handleDeleteComment(comment._id)}
                                             color="#E53E3E"
-                                        />
+                                        /> */}
                                     </View>
                                 ) : null}
                             </>
@@ -373,7 +390,38 @@ const styles = StyleSheet.create({
     },
     commentActions: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "flex-end",
         marginTop: 8,
+    },
+    editText: {
+        color: '#1d7efa',
+        fontSize: 16,
+        marginRight: 10     // Text color
+        // textDecorationLine: 'underline', // Underline the text
+    },
+    deleteText: {
+        color: '#E53E3E',
+        fontSize: 16
+    },
+    actionButton: {
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+            },
+            android: {
+                elevation: 3,
+            },
+        }),
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
