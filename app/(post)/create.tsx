@@ -85,7 +85,8 @@ export default function CreatePostScreen({ navigation }: { navigation: any }) {
 
             Alert.alert("Success", "Post created successfully!");
             // router.replace("/(post)");
-            navigation.navigate("Home");
+            // navigation.navigate("Home");
+            router.back();
 
         } catch (error) {
             Alert.alert("Failed to create the post.");
