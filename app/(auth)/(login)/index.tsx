@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/Feather";
 import * as SecureStore from "expo-secure-store";
+import "../../../global.css";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),

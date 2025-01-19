@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import "../../global.css"
 
 const MyPostsScreen = () => {
     const navigation = useNavigation();

@@ -15,6 +15,7 @@ import {
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as ImagePicker from "expo-image-picker";
+import "../../global.css"
 
 export default function CreatePostScreen({ navigation }: { navigation: any }) {
     const [title, setTitle] = useState("");

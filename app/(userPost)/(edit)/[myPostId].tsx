@@ -20,6 +20,7 @@ import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as ImagePicker from "expo-image-picker";
 import { useRoute, RouteProp } from "@react-navigation/native";
+import "../../../global.css"
 
 
 type EditPostScreenParams = {

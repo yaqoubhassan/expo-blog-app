@@ -20,6 +20,7 @@ import EditPostScreen from "../(userPost)/(edit)/[myPostId]";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import "../../global.css"
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();

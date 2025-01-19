@@ -12,7 +12,7 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
-import "../../../global.css";
+import '../../../global.css'
 import Icon from "react-native-vector-icons/Feather";
 import * as SecureStore from "expo-secure-store";
 

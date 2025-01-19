@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { useFocusEffect, useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import "../../../global.css"
 
 type PostDetailsScreen = {
     postId: string;
